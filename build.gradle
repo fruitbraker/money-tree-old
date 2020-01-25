@@ -1,11 +1,12 @@
 buildscript {
+    ext.kotlin_version = '1.3.61'
     repositories {
         mavenCentral()
         jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath("org.jlleitschuh.gradle:ktlint-gradle:9.1.1")
     }
 }
@@ -29,5 +30,19 @@ subprojects {
         mavenLocal()
         jcenter()
     }
-
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    }
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
 }
+
+
