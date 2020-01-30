@@ -9,50 +9,55 @@ info:
 host: "localhost"
 basePath: "/v1"
 tags:
-- name: "expense"
-  description: "Everything you've spent money on"
-- name: "budget_target"
-  description: "Budget targets to help control your spending"
-- name: "income"
-  description: "Information on your source of money"
-- name: "vendor"
-  description: "Information on the places you've spent money on"
+  - name: "expense"
+    description: "Everything you've spent money on"
+  - name: "expense_category"
+    description: "What category (acts like an enum) this expense falls under"
+  - name: "budget_target"
+    description: "Budget targets to help control your spending"
+  - name: "income"
+    description: "Information on your source of money"
+  - name: "income_category"
+    description: "What category (acts like an enum) this income falls under"
+  - name: "vendor"
+    description: "Information on the places you've spent money on"
+
 schemes:
-- "http"
+  - "http"
 paths:
   /expenses:
     post:
       tags:
-      - "expense"
+        - "expense"
       summary: "Creates a new expense"
       description: "Information on a transaction"
       operationId: "addExpense"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Expense that is added to the list of expenses"
-        required: true
-        schema:
-          $ref: "#/definitions/Expense"
+        - in: "body"
+          name: "body"
+          description: "Expense that is added to the list of expenses"
+          required: true
+          schema:
+            $ref: "#/definitions/Expense"
       responses:
         201:
           description: "Resource successfully created."
-          schema: 
+          schema:
             $ref: "#/definitions/Expense"
         400:
           description: "Bad request."
     get:
       tags:
-      - "expense"
+        - "expense"
       summary: "Retrieve all expenses"
       description: ""
       operationId: "getAllExpenses"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         200:
           description: "Successful operation."
@@ -60,21 +65,21 @@ paths:
             $ref: "#/definitions/Expense"
     put:
       tags:
-      - "expense"
+        - "expense"
       summary: "Bulk update of expenses"
       description: ""
       operationId: "updateExpenses"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Modify an expense"
-        required: true
-        schema:
-          $ref: "#/definitions/Expense"
+        - in: "body"
+          name: "body"
+          description: "Modify an expense"
+          required: true
+          schema:
+            $ref: "#/definitions/Expense"
       responses:
         200:
           description: "Expense successfully updated."
@@ -88,22 +93,23 @@ paths:
           description: "Bad request."
         409:
           description: "Resource conflict."
+
   /expenses/{expense_id}:
     get:
       tags:
-      - "expense"
+        - "expense"
       summary: "Retrieve expense with {expense_id}"
       description: "Returns a single expense"
       operationId: "getExpenseById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "expense_id"
-        in: "path"
-        description: "ID of expense to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "expense_id"
+          in: "path"
+          description: "ID of expense to return"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -115,27 +121,27 @@ paths:
           description: "Expense not found."
     put:
       tags:
-      - "expense"
+        - "expense"
       summary: "Updates expense with {expense_id}"
       description: ""
       operationId: "updateExpense"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "expense_id"
-        in: "path"
-        description: "ID of expense that needs to be updated."
-        required: true
-        type: "integer"
-        format: "int32"
-      - in: "body"
-        name: "body"
-        description: "Expense that is added to the list of expenses."
-        required: true
-        schema:
-          $ref: "#/definitions/Expense"
+        - name: "expense_id"
+          in: "path"
+          description: "ID of expense that needs to be updated."
+          required: true
+          type: "integer"
+          format: "int32"
+        - in: "body"
+          name: "body"
+          description: "Expense that is added to the list of expenses."
+          required: true
+          schema:
+            $ref: "#/definitions/Expense"
       responses:
         200:
           description: "Expense successfully updated."
@@ -153,19 +159,19 @@ paths:
           description: "Resource conflict."
     delete:
       tags:
-      - "expense"
+        - "expense"
       summary: "Deletes an expense with {expense_id}"
       description: ""
       operationId: "deleteExpense"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "expense_id"
-        in: "path"
-        description: "Pet id to delete"
-        required: true
-        type: "integer"
-        format: "int32"
+        - name: "expense_id"
+          in: "path"
+          description: "Pet id to delete"
+          required: true
+          type: "integer"
+          format: "int32"
       responses:
         204:
           description: "Expense successfully deleted."
@@ -176,57 +182,181 @@ paths:
   /targets:
     post:
       tags:
-      - "budget_target"
+        - "budget_target"
       summary: "Creates a new budget target"
       description: "Monthly budget target"
       operationId: "createTarget"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/Budget_Target"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Budget_Target"
       responses:
         201:
           description: "Resource successfully created."
-          schema: 
+          schema:
             $ref: "#/definitions/Budget_Target"
         400:
           description: "Bad request."
     get:
       tags:
-      - "budget_target"
+        - "budget_target"
       summary: "Retrieve all budget targets."
       description: ""
       operationId: "getTargets"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         200:
           description: "Successful operation."
           schema:
             $ref: "#/definitions/Budget_Target"
 
+  /expense-category:
+    post:
+      tags:
+        - "expense_category"
+      summary: "Creates a new expense category."
+      description: "Expense category"
+      operationId: "createExpenseCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Expense_Category"
+      responses:
+        201:
+          description: "Resource successfully created."
+          schema:
+            $ref: "#/definitions/Expense_Category"
+        400:
+          description: "Bad request."
+    get:
+      tags:
+        - "expense_category"
+      summary: "Retrieve all expense categories."
+      description: ""
+      operationId: "getExpenseCategory"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Successful operation."
+          schema:
+            $ref: "#/definitions/Expense_Category"
+
+  /expense-category/{expense_category_id}:
+    get:
+      tags:
+        - "expense_category"
+      summary: "Retrieves expense category with {expense_category_id}"
+      description: "Returns a single expense cateory."
+      operationId: "getExpenseCategoryById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "expense_category_id"
+          in: "path"
+          description: "ID of resource target to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Expense_Category"
+        400:
+          description: "Bad request."
+        404:
+          description: "Resource not found."
+    put:
+      tags:
+        - "expense_category"
+      summary: "Updates expense category with {expense_category_id}"
+      description: ""
+      operationId: "updateExpenseCategoryById"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "expense_category_id"
+          in: "path"
+          description: "ID of resource that needs to be updated."
+          required: true
+          type: "integer"
+          format: "int32"
+        - in: "body"
+          name: "body"
+          description: "Resource to be added."
+          required: true
+          schema:
+            $ref: "#/definitions/Expense_Category"
+      responses:
+        200:
+          description: "Resource successfully updated."
+          schema:
+            $ref: "#/definitions/Expense_Category"
+        201:
+          description: "Resource successfully created."
+          schema:
+            $ref: "#/definitions/Expense_Category"
+        400:
+          description: "Bad request."
+        404:
+          description: "Resource not found."
+        409:
+          description: "Resource conflict."
+    delete:
+      tags:
+        - "expense_category"
+      summary: "Deletes expense_category with  {expense_category_id}"
+      description: ""
+      operationId: "deleteExpenseCategoryById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "expense_category_id"
+          in: "path"
+          description: "Resource id to delete"
+          required: true
+          type: "integer"
+          format: "int32"
+      responses:
+        204:
+          description: "Resource successfully deleted."
+        400:
+          description: "Bad request."
+        404:
+          description: "Resource not found."
+
   /targets/{target_id}:
     get:
       tags:
-      - "budget_target"
+        - "budget_target"
       summary: "Retrieve a budget target with {target_id}"
       description: "Returns a single budget target"
       operationId: "getTargetById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "target_id"
-        in: "path"
-        description: "ID of resource target to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "target_id"
+          in: "path"
+          description: "ID of resource target to return"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -238,27 +368,27 @@ paths:
           description: "Resource not found."
     put:
       tags:
-      - "budget_target"
+        - "budget_target"
       summary: "Updates a budget target with {target_id}"
       description: ""
       operationId: "updateTargetById"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "target_id"
-        in: "path"
-        description: "ID of resource that needs to be updated."
-        required: true
-        type: "integer"
-        format: "int32"
-      - in: "body"
-        name: "body"
-        description: "Resource to be addeds."
-        required: true
-        schema:
-          $ref: "#/definitions/Budget_Target"
+        - name: "target_id"
+          in: "path"
+          description: "ID of resource that needs to be updated."
+          required: true
+          type: "integer"
+          format: "int32"
+        - in: "body"
+          name: "body"
+          description: "Resource to be addeds."
+          required: true
+          schema:
+            $ref: "#/definitions/Budget_Target"
       responses:
         200:
           description: "Resource successfully updated."
@@ -276,19 +406,19 @@ paths:
           description: "Resource conflict."
     delete:
       tags:
-      - "budget_target"
+        - "budget_target"
       summary: "Deletes a budget target with {target_id}"
       description: ""
       operationId: "deleteTargetById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "target_id"
-        in: "path"
-        description: "Resource id to delete"
-        required: true
-        type: "integer"
-        format: "int32"
+        - name: "target_id"
+          in: "path"
+          description: "Resource id to delete"
+          required: true
+          type: "integer"
+          format: "int32"
       responses:
         204:
           description: "Resource successfully deleted."
@@ -296,39 +426,39 @@ paths:
           description: "Bad request."
         404:
           description: "Resource not found."
-          
+
   /income:
     post:
       tags:
-      - "income"
+        - "income"
       summary: "Creates a new income data point."
       description: "Income information"
       operationId: "createIncome"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/Income"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Income"
       responses:
         201:
           description: "Resource successfully created."
-          schema: 
+          schema:
             $ref: "#/definitions/Income"
         400:
           description: "Bad request."
     get:
       tags:
-      - "income"
+        - "income"
       summary: "Retrieve all income information."
       description: ""
       operationId: "getIncome"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         200:
           description: "Successful operation."
@@ -338,19 +468,19 @@ paths:
   /income/{income_id}:
     get:
       tags:
-      - "income"
+        - "income"
       summary: "Retrieves income data with {income_id}"
       description: "Returns a single income."
       operationId: "getIncomeById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "income_id"
-        in: "path"
-        description: "ID of resource target to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "income_id"
+          in: "path"
+          description: "ID of resource target to return"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -362,27 +492,27 @@ paths:
           description: "Resource not found."
     put:
       tags:
-      - "income"
+        - "income"
       summary: "Updates income data with {income_id}"
       description: ""
       operationId: "updateIncomeById"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "income_id"
-        in: "path"
-        description: "ID of resource that needs to be updated."
-        required: true
-        type: "integer"
-        format: "int32"
-      - in: "body"
-        name: "body"
-        description: "Resource to be added."
-        required: true
-        schema:
-          $ref: "#/definitions/Income"
+        - name: "income_id"
+          in: "path"
+          description: "ID of resource that needs to be updated."
+          required: true
+          type: "integer"
+          format: "int32"
+        - in: "body"
+          name: "body"
+          description: "Resource to be added."
+          required: true
+          schema:
+            $ref: "#/definitions/Income"
       responses:
         200:
           description: "Resource successfully updated."
@@ -400,19 +530,19 @@ paths:
           description: "Resource conflict."
     delete:
       tags:
-      - "income"
+        - "income"
       summary: "Deletes income data with {income_id}"
       description: ""
       operationId: "deleteIncomeById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "income_id"
-        in: "path"
-        description: "Resource id to delete"
-        required: true
-        type: "integer"
-        format: "int32"
+        - name: "income_id"
+          in: "path"
+          description: "Resource id to delete"
+          required: true
+          type: "integer"
+          format: "int32"
       responses:
         204:
           description: "Resource successfully deleted."
@@ -420,38 +550,163 @@ paths:
           description: "Bad request."
         404:
           description: "Resource not found."
+
+  /income-category:
+    post:
+      tags:
+        - "income_category"
+      summary: "Creates a new income category."
+      description: "Income category"
+      operationId: "createIncomeCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Income_Category"
+      responses:
+        201:
+          description: "Resource successfully created."
+          schema:
+            $ref: "#/definitions/Income_Category"
+        400:
+          description: "Bad request."
+    get:
+      tags:
+        - "income_category"
+      summary: "Retrieve all income categories."
+      description: ""
+      operationId: "getIncomeCategory"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Successful operation."
+          schema:
+            $ref: "#/definitions/Income_Category"
+
+  /income-category/{income_category_id}:
+    get:
+      tags:
+        - "income_category"
+      summary: "Retrieves income category with {income_category_id}"
+      description: "Returns a single expense cateory."
+      operationId: "getIncomeCategoryById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "income_category_id"
+          in: "path"
+          description: "ID of resource target to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Income_Category"
+        400:
+          description: "Bad request."
+        404:
+          description: "Resource not found."
+    put:
+      tags:
+        - "income_category"
+      summary: "Updates income category with {income_category_id}"
+      description: ""
+      operationId: "updateIncomeCategoryById"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "income_category_id"
+          in: "path"
+          description: "ID of resource that needs to be updated."
+          required: true
+          type: "integer"
+          format: "int32"
+        - in: "body"
+          name: "body"
+          description: "Resource to be added."
+          required: true
+          schema:
+            $ref: "#/definitions/Income_Category"
+      responses:
+        200:
+          description: "Resource successfully updated."
+          schema:
+            $ref: "#/definitions/Income_Category"
+        201:
+          description: "Resource successfully created."
+          schema:
+            $ref: "#/definitions/Income_Category"
+        400:
+          description: "Bad request."
+        404:
+          description: "Resource not found."
+        409:
+          description: "Resource conflict."
+    delete:
+      tags:
+        - "income_category"
+      summary: "Deletes income category with  {income_category_id}"
+      description: ""
+      operationId: "deleteIncomeCategoryById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "income_category_id"
+          in: "path"
+          description: "Resource id to delete"
+          required: true
+          type: "integer"
+          format: "int32"
+      responses:
+        204:
+          description: "Resource successfully deleted."
+        400:
+          description: "Bad request."
+        404:
+          description: "Resource not found."
+
   /vendors:
     post:
       tags:
-      - "vendor"
+        - "vendor"
       summary: "Creates a new vendor data point."
       description: "Vendor information"
       operationId: "createVendor"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/Vendor"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Vendor"
       responses:
         201:
           description: "Resource successfully created."
-          schema: 
+          schema:
             $ref: "#/definitions/Vendor"
         400:
           description: "Bad request."
     get:
       tags:
-      - "vendor"
+        - "vendor"
       summary: "Retrieve all income information."
       description: ""
       operationId: "getVendor"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         200:
           description: "Successful operation."
@@ -461,19 +716,19 @@ paths:
   /vendors/{vendor_id}:
     get:
       tags:
-      - "vendor"
+        - "vendor"
       summary: "Retrieves vendor data with {vendor_id}"
       description: "Returns a single vendor."
       operationId: "getVendorById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "vendor_id"
-        in: "path"
-        description: "ID of resource target to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "vendor_id"
+          in: "path"
+          description: "ID of resource target to return"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -485,27 +740,27 @@ paths:
           description: "Resource not found."
     put:
       tags:
-      - "vendor"
+        - "vendor"
       summary: "Updates vendor data with {vendor_id}"
       description: ""
       operationId: "updateVendorById"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "vendor_id"
-        in: "path"
-        description: "ID of resource that needs to be updated."
-        required: true
-        type: "integer"
-        format: "int32"
-      - in: "body"
-        name: "body"
-        description: "Resource to be added."
-        required: true
-        schema:
-          $ref: "#/definitions/Vendor"
+        - name: "vendor_id"
+          in: "path"
+          description: "ID of resource that needs to be updated."
+          required: true
+          type: "integer"
+          format: "int32"
+        - in: "body"
+          name: "body"
+          description: "Resource to be added."
+          required: true
+          schema:
+            $ref: "#/definitions/Vendor"
       responses:
         200:
           description: "Resource successfully updated."
@@ -523,19 +778,19 @@ paths:
           description: "Resource conflict."
     delete:
       tags:
-      - "vendor"
+        - "vendor"
       summary: "Deletes vendor data with {vendor_id}"
       description: ""
       operationId: "deleteVendorById"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "vendor_id"
-        in: "path"
-        description: "Resource id to delete"
-        required: true
-        type: "integer"
-        format: "int32"
+        - name: "vendor_id"
+          in: "path"
+          description: "Resource id to delete"
+          required: true
+          type: "integer"
+          format: "int32"
       responses:
         204:
           description: "Resource successfully deleted."
@@ -543,7 +798,7 @@ paths:
           description: "Bad request."
         404:
           description: "Resource not found."
-    
+
 definitions:
   Budget_Target:
     type: "object"
@@ -638,8 +893,7 @@ definitions:
       location:
         type: "string"
         example: "123 Main St. City, State 12345"
-    
-  
+
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
