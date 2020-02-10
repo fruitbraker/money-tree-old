@@ -20,7 +20,7 @@ repositories {
 }
 
 subprojects {
-    group "com.ercpng.moneytree"
+    group "com.moneytree"
 
     apply plugin: 'idea'
     apply plugin: 'kotlin'
