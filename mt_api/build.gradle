@@ -1,5 +1,7 @@
 dependencies {
     implementation project(":domain")
     implementation project(":persist")
-    compile group: "org.http4k", name: "http4k-core", version: "3.233.0"
+    implementation group: "org.http4k", name: "http4k-core", version: "${http4kVersion}"
+    implementation group: "org.http4k", name: "http4k-server-jetty", version: "${http4kVersion}"
+    implementation group: "org.http4k", name: "http4k-format-gson", version: "${http4kVersion}"
 }
