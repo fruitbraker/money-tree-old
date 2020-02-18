@@ -810,15 +810,8 @@ definitions:
       amount:
         type: "number"
         format: "double"
-      date_created:
-        type: "string"
-        format: "date-time"
-      date_modified:
-        type: "string"
-        format: "date-time"
-      notes:
-        type: "string"
-        example: "Something about this budget target?"
+      metadata:
+        $ref: "#/definitions/Metadata"
   Expense:
     type: "object"
     properties:
@@ -835,15 +828,8 @@ definitions:
         $ref: "#/definitions/Vendor"
       category:
         $ref: "#/definitions/Expense_Category"
-      date_created:
-        type: "string"
-        format: "date-time"
-      date_modified:
-        type: "string"
-        format: "date-time"
-      notes:
-        type: "string"
-        example: "Something about this transaction?"
+      metadata:
+        $ref: "#/definitions/Metadata"
       hide:
         type: "boolean"
         description: "Should this not be calculated into the budgets?"
@@ -864,18 +850,14 @@ definitions:
         example: "Company Inc"
       category:
         $ref: "#/definitions/Income_Category"
+      transaction_amount:
+        type: "number"
+        format: "double"
       transaction_date:
         type: "string"
         format: "date"
-      date_created:
-        type: "string"
-        format: "date-time"
-      date_modified:
-        type: "string"
-        format: "date-time"
-      notes:
-        type: "string"
-        example: "Something about this income?"
+      metadata:
+        $ref: "#/definitions/Metadata"
   Income_Category:
     type: "object"
     properties:
@@ -890,9 +872,18 @@ definitions:
       name:
         type: "string"
         example: "A store's name"
-      location:
+  Metadata:
+    type: "object"
+    properties:
+      date_created:
         type: "string"
-        example: "123 Main St. City, State 12345"
+        format: "date-time"
+      date_modified:
+        type: "string"
+        format: "date-time"
+      notes:
+        type: "string"
+        example: "Something about this?"
 
 externalDocs:
   description: "Find out more about Swagger"
