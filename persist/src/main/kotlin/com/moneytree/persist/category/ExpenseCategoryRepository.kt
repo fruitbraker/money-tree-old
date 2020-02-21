@@ -1,4 +1,4 @@
-package com.moneytree.persist.expense.category
+package com.moneytree.persist.category
 
 class ExpenseCategoryRepository {
 }
