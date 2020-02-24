@@ -1,5 +1,7 @@
 package com.moneytree.domain.expense
 
-interface IExpenseRepository {
+import javax.inject.Singleton
+
+interface IExpenseService {
     fun search(expenseId: Long): Expense
 }

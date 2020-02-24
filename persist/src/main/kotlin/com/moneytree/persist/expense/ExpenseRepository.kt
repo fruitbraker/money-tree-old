@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ExpenseRepository @Inject constructor(
     private val expenseDao: ExpenseDao
 ): IExpenseRepository {
-    override fun insert(expense: Expense) {
-
+    override fun search(expenseId: Long): Expense {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

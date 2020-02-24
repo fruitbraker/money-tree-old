@@ -1,7 +1,13 @@
 package com.moneytree.mtapi.v1
 
-import com.moneytree.mtapi.v1.expense.Expense
-import com.moneytree.mtapi.v1.expense.expenseRoutes
+import com.google.inject.AbstractModule
+import com.google.inject.Guice
+import com.google.inject.Injector
+import com.moneytree.domain.expense.ExpenseService
+import com.moneytree.domain.expense.IExpenseRepository
+import com.moneytree.domain.expense.IExpenseService
+import com.moneytree.mtapi.v1.expense.ExpenseRoutes
+import com.moneytree.persist.PersistModules
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
 import org.http4k.server.Jetty
@@ -15,14 +21,27 @@ import org.http4k.format.Gson.auto
 import org.http4k.routing.RoutingHttpHandler
 
 fun main() {
-
     fun health(): RoutingHttpHandler {
         return routes(
             "/health" bind GET to { Response(OK).body("Your money tree is growing some nice cash. Hopefully Uncle Sam won't too much but who cares? You'll get to retire early.") }
         )
     }
+    val injector: Injector = Guice.createInjector(ServiceModules(), RouteModules(), PersistModules())
 
-    val allRoutes = routes(health(), expenseRoutes())
+    val allRoutes = routes(health(), injector.getInstance(ExpenseRoutes::class.java).expenseRoutes())
 
     allRoutes.asServer(Jetty(9000)).start()
 }
+
+class ServiceModules: AbstractModule() {
+    override fun configure() {
+        bind(IExpenseService::class.java).to(ExpenseService::class.java).asEagerSingleton()
+    }
+}
+
+class RouteModules: AbstractModule() {
+    override fun configure() {
+        bind(ExpenseRoutes::class.java).asEagerSingleton()
+    }
+}
+
