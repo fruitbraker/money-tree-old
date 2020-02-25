@@ -3,6 +3,7 @@ package com.moneytree.mtapi.v1
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
+import com.google.inject.Provides
 import com.moneytree.domain.expense.ExpenseService
 import com.moneytree.domain.expense.IExpenseRepository
 import com.moneytree.domain.expense.IExpenseService
@@ -19,14 +20,22 @@ import org.http4k.routing.routes
 import org.http4k.server.asServer
 import org.http4k.format.Gson.auto
 import org.http4k.routing.RoutingHttpHandler
+import java.sql.Connection
+import java.sql.DriverManager
 
 fun main() {
     fun health(): RoutingHttpHandler {
         return routes(
-            "/health" bind GET to { Response(OK).body("Your money tree is growing some nice cash. Hopefully Uncle Sam won't too much but who cares? You'll get to retire early.") }
+            "/health" bind GET to { Response(OK).body("Your money tree is growing some nice cash. Hopefully Uncle Sam won't take too much but who cares? You'll get to retire early.") }
         )
     }
-    val injector: Injector = Guice.createInjector(ServiceModules(), RouteModules(), PersistModules())
+
+    val injector: Injector = Guice.createInjector(
+        ServiceModules(),
+        RouteModules(),
+        PersistModules(),
+        DatabaseModule()
+    )
 
     val allRoutes = routes(health(), injector.getInstance(ExpenseRoutes::class.java).expenseRoutes())
 
@@ -43,5 +52,20 @@ class RouteModules: AbstractModule() {
     override fun configure() {
         bind(ExpenseRoutes::class.java).asEagerSingleton()
     }
+}
+
+class DatabaseModule: AbstractModule() {
+    override fun configure() {
+
+    }
+
+    @Provides
+    fun dbConnection(): Connection {
+        val username: String = "postgres"
+        val password: String = "qwertyuiop"
+        val url: String = "jdbc:postgresql://localhost:5432/moneytree"
+        return DriverManager.getConnection(url, username, password)
+    }
+
 }
 

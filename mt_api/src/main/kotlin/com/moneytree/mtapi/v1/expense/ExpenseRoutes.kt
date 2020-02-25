@@ -23,7 +23,7 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
         return routes(
             "/expense/{expense_id}" bind GET to {request: Request ->
                 val expenseId = expenseIdLens(request).toLong()
-//                expenseService.search(expenseId)
+                expenseService.search(expenseId)
                 Response(Status.OK).body("Retrieved expense with id $expenseId")
             },
             "/expense" bind POST to { request: Request ->

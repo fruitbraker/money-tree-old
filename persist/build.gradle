@@ -4,11 +4,12 @@ plugins {
 
 dependencies {
     implementation project(":domain")
-    implementation 'org.postgresql:postgresql:42.2.10'
-    jooqRuntime 'org.postgresql:postgresql:42.2.10'
-    implementation 'org.jooq:jooq:3.13.0'
-    implementation 'org.jooq:jooq-meta:3.13.0'
-    implementation 'org.jooq:jooq-codegen:3.13.0'
+    implementation "org.postgresql:postgresql:${postgres_version}"
+    jooqRuntime "org.postgresql:postgresql:${postgres_version}"
+    implementation "org.jooq:jooq:${jooq_version}"
+    implementation "org.jooq:jooq-meta:${jooq_version}"
+    implementation "org.jooq:jooq-codegen:${jooq_version}"
+    implementation "com.zaxxer:HikariCP:${hikari_version}"
 }
 
 jooq {
