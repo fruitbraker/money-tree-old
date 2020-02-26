@@ -22,6 +22,7 @@ import org.http4k.format.Gson.auto
 import org.http4k.routing.RoutingHttpHandler
 import java.sql.Connection
 import java.sql.DriverManager
+import javax.sql.DataSource
 
 fun main() {
     fun health(): RoutingHttpHandler {
@@ -33,8 +34,7 @@ fun main() {
     val injector: Injector = Guice.createInjector(
         ServiceModules(),
         RouteModules(),
-        PersistModules(),
-        DatabaseModule()
+        PersistModules()
     )
 
     val allRoutes = routes(health(), injector.getInstance(ExpenseRoutes::class.java).expenseRoutes())
@@ -54,18 +54,4 @@ class RouteModules: AbstractModule() {
     }
 }
 
-class DatabaseModule: AbstractModule() {
-    override fun configure() {
-
-    }
-
-    @Provides
-    fun dbConnection(): Connection {
-        val username: String = "postgres"
-        val password: String = "qwertyuiop"
-        val url: String = "jdbc:postgresql://localhost:5432/moneytree"
-        return DriverManager.getConnection(url, username, password)
-    }
-
-}
 
