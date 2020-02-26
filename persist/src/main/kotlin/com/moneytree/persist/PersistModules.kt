@@ -3,6 +3,7 @@ package com.moneytree.persist
 import com.google.inject.AbstractModule
 import com.google.inject.Inject
 import com.google.inject.Provides
+import com.google.inject.Singleton
 import com.moneytree.domain.expense.IExpenseRepository
 import com.moneytree.persist.expense.ExpenseRepository
 import com.zaxxer.hikari.HikariDataSource
@@ -16,8 +17,8 @@ class PersistModules: AbstractModule() {
         bind(IExpenseRepository::class.java).to(ExpenseRepository::class.java).asEagerSingleton()
     }
 
-
     @Provides
+    @Singleton
     fun dbConnection(): HikariDataSource {
         val ds = HikariDataSource()
         ds.jdbcUrl = "jdbc:postgresql://localhost:5432/moneytree"
@@ -27,7 +28,7 @@ class PersistModules: AbstractModule() {
     }
 
     @Provides
-    @Inject
+    @Singleton
     fun dslContext(ds: HikariDataSource): DSLContext {
         return DSL.using(ds, SQLDialect.POSTGRES)
     }
