@@ -23,8 +23,8 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
         return routes(
             "/expense/{expense_id}" bind GET to {request: Request ->
                 val expenseId = expenseIdLens(request).toLong()
-                expenseService.search(expenseId)
-                Response(Status.OK).body("Retrieved expense with id $expenseId")
+                val result = Expense.fromDomain(expenseService.search(expenseId))
+                Response(Status.OK).body("Retrieved expense with id $expenseId").with(expenseLens of result)
             },
             "/expense" bind POST to { request: Request ->
                 println(request.toMessage())
@@ -33,22 +33,3 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
         )
     }
 }
-
-//@Inject
-//fun expenseRoutes (expenseService: IExpenseService): RoutingHttpHandler {
-//    val expenseLens = Body.auto<Expense>().toLens()
-//    val expenseListLens = Body.auto<MutableList<Expense>>().toLens()
-//    val expenseIdLens = Path.string().of("expense_id")
-//
-//    return routes(
-//        "/expense/{expense_id}" bind GET to {request: Request ->
-//            val expenseId = expenseIdLens(request).toLong()
-//            expenseService.search(expenseId)
-//            Response(Status.OK).body("Retrieved expense with id ${expenseId}")
-//        },
-//        "/expense" bind POST to { request: Request ->
-//            println(request.toMessage())
-//            Response(Status.CREATED).header("New Expense", "something")
-//        }
-//    )
-//}

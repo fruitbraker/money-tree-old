@@ -1,5 +1,5 @@
 package com.moneytree.domain.expense
 
 interface IExpenseService {
-    fun search(expenseId: Long)
+    fun search(expenseId: Long): Expense
 }

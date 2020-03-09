@@ -53,5 +53,3 @@ class RouteModules: AbstractModule() {
         bind(ExpenseRoutes::class.java).asEagerSingleton()
     }
 }
-
-

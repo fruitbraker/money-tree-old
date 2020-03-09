@@ -7,7 +7,7 @@ import javax.transaction.Transactional
 @Singleton
 @Transactional
 class ExpenseService @Inject constructor(private val expenseRepository: IExpenseRepository): IExpenseService {
-    override fun search(expenseId: Long) {
-        expenseRepository.search(expenseId)
+    override fun search(expenseId: Long): Expense {
+        return expenseRepository.search(expenseId)
     }
 }
