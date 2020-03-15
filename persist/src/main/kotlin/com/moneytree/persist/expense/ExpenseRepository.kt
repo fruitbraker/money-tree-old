@@ -43,4 +43,8 @@ class ExpenseRepository @Inject constructor(
 
         return result.mapNotNull { it.toDomain() }.first()
     }
+
+    override fun insert(expense: Expense) {
+
+    }
 }

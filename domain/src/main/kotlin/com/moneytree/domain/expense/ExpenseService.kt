@@ -10,4 +10,8 @@ class ExpenseService @Inject constructor(private val expenseRepository: IExpense
     override fun search(expenseId: Long): Expense {
         return expenseRepository.search(expenseId)
     }
+
+    override fun insert(expense: Expense) {
+
+    }
 }

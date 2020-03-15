@@ -24,10 +24,11 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
             "/expense/{expense_id}" bind GET to {request: Request ->
                 val expenseId = expenseIdLens(request).toLong()
                 val result = Expense.fromDomain(expenseService.search(expenseId))
-                Response(Status.OK).body("Retrieved expense with id $expenseId").with(expenseLens of result)
+                Response(Status.OK).with(expenseLens of result)
             },
             "/expense" bind POST to { request: Request ->
-                println(request.toMessage())
+                val expense = expenseLens(request)
+
                 Response(Status.CREATED).header("New Expense", "something")
             }
         )

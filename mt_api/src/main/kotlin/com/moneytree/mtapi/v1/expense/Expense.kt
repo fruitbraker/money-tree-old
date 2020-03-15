@@ -4,19 +4,20 @@ import org.http4k.core.Body
 import org.http4k.format.Gson.auto
 import java.math.BigDecimal
 import java.sql.Timestamp
+import java.time.OffsetDateTime
 import kotlin.math.exp
 import com.moneytree.domain.expense.Expense as ExpenseDomain
 
 data class Expense (
     val expense_id: Long? = null,
-    val transaction_date: Timestamp,
+    val transaction_date: OffsetDateTime,
     val transaction_amount: BigDecimal,
     val vendor_id: Long,
     val vendor_name: String,
     val expense_category: String,
     val metadata_id: Long,
-    val date_created: Timestamp,
-    val date_modified: Timestamp,
+    val date_created: OffsetDateTime,
+    val date_modified: OffsetDateTime,
     val notes: String? = null,
     val hide: Boolean
 ) {
