@@ -2,13 +2,15 @@ package com.moneytree.persist.expense
 
 import com.moneytree.domain.expense.Expense
 import com.moneytree.domain.expense.IExpenseRepository
+import com.moneytree.domain.Result
+import com.moneytree.domain.toErr
+import com.moneytree.domain.toOk
 import com.moneytree.persist.db.generated.Tables.METADATA
 import com.moneytree.persist.db.generated.Tables.VENDOR
-import com.moneytree.persist.db.generated.tables.daos.ExpenseDao
 import com.moneytree.persist.db.generated.tables.Expense.EXPENSE
 import org.jooq.DSLContext
 import org.jooq.Record
-import org.jooq.Result
+import java.lang.Exception
 import javax.inject.Inject
 
 class ExpenseRepository @Inject constructor(
@@ -31,8 +33,7 @@ class ExpenseRepository @Inject constructor(
         )
     }
 
-
-    override fun search(expenseId: Long): Expense {
+    override fun search(expenseId: Long): Result<Expense, Exception> {
         val result = dslContext.configuration().dsl()
             .select()
             .from(EXPENSE)
@@ -41,7 +42,12 @@ class ExpenseRepository @Inject constructor(
             .where(EXPENSE.EXPENSE_ID.eq(expenseId))
             .fetch()
 
-        return result.mapNotNull { it.toDomain() }.first()
+
+        return try {
+            result.mapNotNull { it.toDomain() }.first().toOk()
+        } catch (e: Exception) {
+            e.toErr()
+        }
     }
 
     override fun insert(expense: Expense) {

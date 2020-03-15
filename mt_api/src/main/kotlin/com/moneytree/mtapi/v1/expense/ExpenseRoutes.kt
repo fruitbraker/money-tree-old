@@ -1,5 +1,6 @@
 package com.moneytree.mtapi.v1.expense
 
+import com.moneytree.domain.Result
 import com.moneytree.domain.expense.IExpenseService
 import org.http4k.core.*
 import org.http4k.format.Gson.auto
@@ -23,12 +24,20 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
         return routes(
             "/expense/{expense_id}" bind GET to {request: Request ->
                 val expenseId = expenseIdLens(request).toLong()
-                val result = Expense.fromDomain(expenseService.search(expenseId))
-                Response(Status.OK).with(expenseLens of result)
+                when (val result = expenseService.search(expenseId)) {
+                    is Result.Ok -> {
+                        Response(Status.OK).with(expenseLens of Expense.fromDomain(result.value))
+                    }
+                    is Result.Err -> {
+                        when (result.error) {
+                            is java.util.NoSuchElementException -> Response(Status.NOT_FOUND).body("Expense not found.")
+                            else -> Response(Status.BAD_REQUEST)
+                        }
+                    }
+                }
             },
             "/expense" bind POST to { request: Request ->
                 val expense = expenseLens(request)
-
                 Response(Status.CREATED).header("New Expense", "something")
             }
         )
