@@ -1,6 +1,6 @@
 package com.moneytree.persist.expense
 
-import com.moneytree.domain.expense.Expense
+import com.moneytree.domain.expense.ExpenseSummary
 import com.moneytree.domain.expense.IExpenseRepository
 import com.moneytree.domain.Result
 import com.moneytree.domain.toErr
@@ -17,8 +17,8 @@ class ExpenseRepository @Inject constructor(
     private val dslContext: DSLContext
 ): IExpenseRepository {
 
-    private fun Record.toDomain(): Expense {
-        return Expense(
+    private fun Record.toDomain(): ExpenseSummary {
+        return ExpenseSummary(
             expenseId = this[EXPENSE.EXPENSE_ID],
             transactionDate = this[EXPENSE.TRANSACTION_DATE],
             transactionAmount = this[EXPENSE.TRANSACTION_AMOUNT],
@@ -33,7 +33,7 @@ class ExpenseRepository @Inject constructor(
         )
     }
 
-    override fun search(expenseId: Long): Result<Expense, Exception> {
+    override fun search(expenseId: Long): Result<ExpenseSummary, Exception> {
         val result = dslContext.configuration().dsl()
             .select()
             .from(EXPENSE)
@@ -50,7 +50,28 @@ class ExpenseRepository @Inject constructor(
         }
     }
 
-    override fun insert(expense: Expense) {
+    override fun insert(expenseSummary: ExpenseSummary): Result<ExpenseSummary, Exception> {
+        val result = dslContext.configuration().dsl()
+            .insertInto(EXPENSE)
+            .columns(EXPENSE.TRANSACTION_DATE,
+                EXPENSE.TRANSACTION_AMOUNT,
+                EXPENSE.VENDOR_ID,
+                EXPENSE.EXPENSE_CATEGORY,
+                EXPENSE.METADATA,
+                EXPENSE.HIDE)
+            .values(expenseSummary.dateCreated,
+                expenseSummary.transactionAmount,
+                expenseSummary.vendorId,
+                expenseSummary.expenseCategory,
+                expenseSummary.metadataId,
+                expenseSummary.hide)
+            .returning(EXPENSE.asterisk())
+            .fetch()
 
+        return try {
+            result.mapNotNull { it.toDomain() }.first().toOk()
+        } catch (e: Exception) {
+            e.toErr()
+        }
     }
 }

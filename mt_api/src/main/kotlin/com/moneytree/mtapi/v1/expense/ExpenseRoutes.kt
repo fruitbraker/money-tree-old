@@ -17,8 +17,8 @@ import javax.inject.Singleton
 @Singleton
 class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseService) {
     fun expenseRoutes (): RoutingHttpHandler {
-        val expenseLens = Body.auto<Expense>().toLens()
-        val expenseListLens = Body.auto<MutableList<Expense>>().toLens()
+        val expenseLens = Body.auto<ExpenseSummary>().toLens()
+        val expenseListLens = Body.auto<MutableList<ExpenseSummary>>().toLens()
         val expenseIdLens = Path.string().of("expense_id")
 
         return routes(
@@ -26,7 +26,7 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
                 val expenseId = expenseIdLens(request).toLong()
                 when (val result = expenseService.search(expenseId)) {
                     is Result.Ok -> {
-                        Response(Status.OK).with(expenseLens of Expense.fromDomain(result.value))
+                        Response(Status.OK).with(expenseLens of ExpenseSummary.fromDomain(result.value))
                     }
                     is Result.Err -> {
                         when (result.error) {
@@ -37,7 +37,7 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
                 }
             },
             "/expense" bind POST to { request: Request ->
-                val expense = expenseLens(request)
+                val expense = expenseService.insert(ExpenseSummary.toDomain(expenseLens(request)))
                 Response(Status.CREATED).header("New Expense", "something")
             }
         )

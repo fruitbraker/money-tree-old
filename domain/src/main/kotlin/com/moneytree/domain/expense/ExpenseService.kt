@@ -10,12 +10,12 @@ import javax.transaction.Transactional
 @Transactional
 class ExpenseService @Inject constructor(private val expenseRepository: IExpenseRepository): IExpenseService {
 
-    override fun search(expenseId: Long): Result<Expense, Exception> {
+    override fun search(expenseId: Long): Result<ExpenseSummary, Exception> {
         return expenseRepository.search(expenseId)
     }
 
-    override fun insert(expense: Expense) {
-
+    override fun insert(expenseSummary: ExpenseSummary): Result<ExpenseSummary, Exception> {
+        return expenseRepository.insert(expenseSummary)
     }
 
 }
