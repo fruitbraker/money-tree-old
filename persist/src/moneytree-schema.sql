@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS expense
     transaction_amount DECIMAL NOT NULL,
     vendor_id BIGINT REFERENCES vendor(vendor_id) NOT NULL,
     expense_category VARCHAR(32) REFERENCES expense_category(expense_category_id) NOT NULL,
-    metadata BIGINT REFERENCES metadata(metadata_id) NOT NULL,
+    metadata_id BIGINT REFERENCES metadata(metadata_id) NOT NULL,
     hide boolean DEFAULT false NOT NULL
 );
 

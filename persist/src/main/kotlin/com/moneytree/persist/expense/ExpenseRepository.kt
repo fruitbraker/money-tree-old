@@ -3,6 +3,7 @@ package com.moneytree.persist.expense
 import com.moneytree.domain.expense.ExpenseSummary
 import com.moneytree.domain.expense.IExpenseRepository
 import com.moneytree.domain.Result
+import com.moneytree.domain.expense.Expense
 import com.moneytree.domain.toErr
 import com.moneytree.domain.toOk
 import com.moneytree.persist.db.generated.Tables.METADATA
@@ -25,7 +26,7 @@ class ExpenseRepository @Inject constructor(
             vendorId = this[EXPENSE.VENDOR_ID],
             vendorName = this[VENDOR.VENDOR_NAME],
             expenseCategory = this[EXPENSE.EXPENSE_CATEGORY],
-            metadataId = this[EXPENSE.METADATA],
+            metadataId = this[EXPENSE.METADATA_ID],
             dateCreated = this[METADATA.DATE_CREATED],
             dateModified = this[METADATA.DATE_MODIFIED],
             notes = this[METADATA.NOTES],
@@ -38,7 +39,7 @@ class ExpenseRepository @Inject constructor(
             .select()
             .from(EXPENSE)
             .join(VENDOR).on(EXPENSE.VENDOR_ID.eq(VENDOR.VENDOR_ID))
-            .join(METADATA).on(EXPENSE.METADATA.eq(METADATA.METADATA_ID))
+            .join(METADATA).on(EXPENSE.METADATA_ID.eq(METADATA.METADATA_ID))
             .where(EXPENSE.EXPENSE_ID.eq(expenseId))
             .fetch()
 
@@ -50,26 +51,25 @@ class ExpenseRepository @Inject constructor(
         }
     }
 
-    override fun insert(expenseSummary: ExpenseSummary): Result<ExpenseSummary, Exception> {
-        val result = dslContext.configuration().dsl()
-            .insertInto(EXPENSE)
-            .columns(EXPENSE.TRANSACTION_DATE,
-                EXPENSE.TRANSACTION_AMOUNT,
-                EXPENSE.VENDOR_ID,
-                EXPENSE.EXPENSE_CATEGORY,
-                EXPENSE.METADATA,
-                EXPENSE.HIDE)
-            .values(expenseSummary.dateCreated,
-                expenseSummary.transactionAmount,
-                expenseSummary.vendorId,
-                expenseSummary.expenseCategory,
-                expenseSummary.metadataId,
-                expenseSummary.hide)
-            .returning(EXPENSE.asterisk())
-            .fetch()
-
+    override fun insert(expense: Expense): Result<Long, Exception> {
         return try {
-            result.mapNotNull { it.toDomain() }.first().toOk()
+            val result = dslContext.configuration().dsl()
+                .insertInto(EXPENSE)
+                .columns(EXPENSE.TRANSACTION_DATE,
+                    EXPENSE.TRANSACTION_AMOUNT,
+                    EXPENSE.VENDOR_ID,
+                    EXPENSE.EXPENSE_CATEGORY,
+                    EXPENSE.METADATA_ID,
+                    EXPENSE.HIDE)
+                .values(expense.transactionDate,
+                    expense.transactionAmount,
+                    expense.vendorId,
+                    expense.expenseCategory,
+                    expense.metadataId,
+                    expense.hide)
+                .returning(EXPENSE.EXPENSE_ID)
+                .fetch()
+            result.mapNotNull { it }.first()[EXPENSE.EXPENSE_ID].toOk()
         } catch (e: Exception) {
             e.toErr()
         }

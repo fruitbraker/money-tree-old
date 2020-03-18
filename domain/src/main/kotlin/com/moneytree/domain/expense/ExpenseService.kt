@@ -14,8 +14,8 @@ class ExpenseService @Inject constructor(private val expenseRepository: IExpense
         return expenseRepository.search(expenseId)
     }
 
-    override fun insert(expenseSummary: ExpenseSummary): Result<ExpenseSummary, Exception> {
-        return expenseRepository.insert(expenseSummary)
+    override fun insert(expense: Expense): Result<Long, Exception> {
+        return expenseRepository.insert(expense)
     }
 
 }

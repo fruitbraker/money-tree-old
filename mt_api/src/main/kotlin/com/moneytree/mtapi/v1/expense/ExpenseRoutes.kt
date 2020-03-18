@@ -17,8 +17,9 @@ import javax.inject.Singleton
 @Singleton
 class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseService) {
     fun expenseRoutes (): RoutingHttpHandler {
-        val expenseLens = Body.auto<ExpenseSummary>().toLens()
-        val expenseListLens = Body.auto<MutableList<ExpenseSummary>>().toLens()
+        val expenseLens = Body.auto<Expense>().toLens()
+        val expenseSummaryLens = Body.auto<ExpenseSummary>().toLens()
+        val expenseSummaryListLens = Body.auto<MutableList<ExpenseSummary>>().toLens()
         val expenseIdLens = Path.string().of("expense_id")
 
         return routes(
@@ -26,7 +27,7 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
                 val expenseId = expenseIdLens(request).toLong()
                 when (val result = expenseService.search(expenseId)) {
                     is Result.Ok -> {
-                        Response(Status.OK).with(expenseLens of ExpenseSummary.fromDomain(result.value))
+                        Response(Status.OK).with(expenseSummaryLens of ExpenseSummary.fromDomain(result.value))
                     }
                     is Result.Err -> {
                         when (result.error) {
@@ -37,8 +38,11 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
                 }
             },
             "/expense" bind POST to { request: Request ->
-                val expense = expenseService.insert(ExpenseSummary.toDomain(expenseLens(request)))
-                Response(Status.CREATED).header("New Expense", "something")
+                val newExpense = expenseLens(request)
+                when (val result = expenseService.insert(Expense.toDomain(newExpense))) {
+                    is Result.Ok -> Response(Status.CREATED).with(expenseLens of newExpense.copy(expense_id = result.value))
+                    is Result.Err -> Response(Status.BAD_REQUEST).body("Malformed input data.")
+                }
             }
         )
     }

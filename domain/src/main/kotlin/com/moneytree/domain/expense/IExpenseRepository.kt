@@ -5,5 +5,5 @@ import java.lang.Exception
 
 interface IExpenseRepository {
     fun search(expenseId: Long): Result<ExpenseSummary, Exception>
-    fun insert(expenseSummary: ExpenseSummary): Result<ExpenseSummary, Exception>
+    fun insert(expense: Expense): Result<Long, Exception>
 }
