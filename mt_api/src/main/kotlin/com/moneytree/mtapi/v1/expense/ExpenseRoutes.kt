@@ -24,24 +24,32 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
 
         return routes(
             "/expense/{expense_id}" bind GET to {request: Request ->
-                val expenseId = expenseIdLens(request).toLong()
-                when (val result = expenseService.search(expenseId)) {
-                    is Result.Ok -> {
-                        Response(Status.OK).with(expenseSummaryLens of ExpenseSummary.fromDomain(result.value))
-                    }
-                    is Result.Err -> {
-                        when (result.error) {
-                            is java.util.NoSuchElementException -> Response(Status.NOT_FOUND).body("Expense not found.")
-                            else -> Response(Status.BAD_REQUEST)
+                try {
+                    val expenseId = expenseIdLens(request).toLong()
+                    when (val result = expenseService.search(expenseId)) {
+                        is Result.Ok -> {
+                            Response(Status.OK).with(expenseSummaryLens of ExpenseSummary.fromDomain(result.value))
+                        }
+                        is Result.Err -> {
+                            when (result.error) {
+                                is java.util.NoSuchElementException -> Response(Status.NOT_FOUND).body("Expense not found.")
+                                else -> Response(Status.BAD_REQUEST)
+                            }
                         }
                     }
+                } catch (e: Exception) {
+                    Response(Status.BAD_REQUEST).body("Bad input data.")
                 }
             },
             "/expense" bind POST to { request: Request ->
-                val newExpense = expenseLens(request)
-                when (val result = expenseService.insert(Expense.toDomain(newExpense))) {
-                    is Result.Ok -> Response(Status.CREATED).with(expenseLens of newExpense.copy(expense_id = result.value))
-                    is Result.Err -> Response(Status.BAD_REQUEST).body("Malformed input data.")
+                try {
+                    val newExpense = expenseLens(request)
+                    when (val result = expenseService.insert(Expense.toDomain(newExpense))) {
+                        is Result.Ok -> Response(Status.CREATED).with(expenseLens of newExpense.copy(expense_id = result.value))
+                        is Result.Err -> Response(Status.BAD_REQUEST).body("Bad input data.")
+                    }
+                } catch (e: Exception) {
+                    Response(Status.BAD_REQUEST).body("Bad input data.")
                 }
             }
         )
