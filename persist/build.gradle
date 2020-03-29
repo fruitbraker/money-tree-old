@@ -29,7 +29,11 @@ jooq {
             }
             database {
                 name = 'org.jooq.meta.postgres.PostgresDatabase'
-                inputSchema = 'mtdev'
+                schemata {
+                    schema {
+                        inputSchema = 'mtdev'
+                    }
+                }
             }
             generate {
                 relations = true

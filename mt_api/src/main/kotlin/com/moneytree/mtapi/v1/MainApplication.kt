@@ -9,9 +9,9 @@ import com.moneytree.domain.expense.IExpenseRepository
 import com.moneytree.domain.expense.IExpenseService
 import com.moneytree.mtapi.v1.expense.ExpenseRoutes
 import com.moneytree.persist.PersistModules
+import org.eclipse.jetty.util.Jetty
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
-import org.http4k.server.Jetty
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
@@ -20,11 +20,16 @@ import org.http4k.routing.routes
 import org.http4k.server.asServer
 import org.http4k.format.Gson.auto
 import org.http4k.routing.RoutingHttpHandler
+import org.http4k.server.Http4kServer
 import java.sql.Connection
 import java.sql.DriverManager
 import javax.sql.DataSource
 
 fun main() {
+    setUpServer().start()
+}
+
+fun setUpServer(): Http4kServer {
     fun health(): RoutingHttpHandler {
         return routes(
             "/health" bind GET to { Response(OK).body("Your money tree is growing some nice cash. Hopefully Uncle Sam won't take too much but who cares? You'll get to retire early.") }
@@ -38,8 +43,7 @@ fun main() {
     )
 
     val allRoutes = routes(health(), injector.getInstance(ExpenseRoutes::class.java).expenseRoutes())
-
-    allRoutes.asServer(Jetty(9000)).start()
+    return allRoutes.asServer(org.http4k.server.Jetty(9000))
 }
 
 class ServiceModules: AbstractModule() {
