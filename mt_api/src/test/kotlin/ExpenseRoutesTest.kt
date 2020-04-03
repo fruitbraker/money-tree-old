@@ -1,4 +1,3 @@
-import com.moneytree.mtapi.v1.main
 import com.moneytree.mtapi.v1.setUpServer
 import com.natpryce.hamkrest.assertion.assertThat
 import org.http4k.client.OkHttp
@@ -11,7 +10,7 @@ import org.http4k.hamkrest.hasStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 
-class ExpenseTest {
+class ExpenseRoutesTest {
 
     private val client = OkHttp()
     private val server = setUpServer()

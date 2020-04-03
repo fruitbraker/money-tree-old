@@ -2,6 +2,7 @@ set schema 'mtdev';
 
 INSERT INTO expense_category(expense_category_id) VALUES ('EXPENSE_CATEGORY_1');
 INSERT INTO expense_category(expense_category_id) VALUES ('EXPENSE_CATEGORY_2');
+INSERT INTO expense_category(expense_category_id) VALUES ('TEST');
 
 INSERT INTO vendor(vendor_name) VALUES ('VENDOR_1');
 INSERT INTO vendor(vendor_name) VALUES ('VENDOR_2');

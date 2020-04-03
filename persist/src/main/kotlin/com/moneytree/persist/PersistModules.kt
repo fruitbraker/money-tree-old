@@ -20,7 +20,7 @@ class PersistModules: AbstractModule() {
         bind(IExpenseRepository::class.java).to(ExpenseRepository::class.java).asEagerSingleton()
     }
 
-    private val schema = "mtdev"
+    private val schema = "test"
 
     @Provides
     @Singleton
