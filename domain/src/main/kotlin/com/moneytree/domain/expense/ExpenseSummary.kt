@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 data class ExpenseSummary (
     val expenseId: Long?,
     val transactionDate: OffsetDateTime,
-    val transactionAmount: BigDecimal,
+    val transactionAmount: Double,
     val vendorId: Long,
     val vendorName: String,
     val expenseCategory: String,

@@ -20,7 +20,7 @@ class ExpenseRepository @Inject constructor(
         return ExpenseSummary(
             expenseId = this[EXPENSE.EXPENSE_ID],
             transactionDate = this[EXPENSE.TRANSACTION_DATE],
-            transactionAmount = this[EXPENSE.TRANSACTION_AMOUNT],
+            transactionAmount = this[EXPENSE.TRANSACTION_AMOUNT].toDouble(),
             vendorId = this[EXPENSE.VENDOR_ID],
             vendorName = this[VENDOR.VENDOR_NAME],
             expenseCategory = this[EXPENSE.EXPENSE_CATEGORY],

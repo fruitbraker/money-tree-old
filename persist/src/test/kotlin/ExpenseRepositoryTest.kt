@@ -32,7 +32,7 @@ class ExpenseRepositoryTest: PersistTestModule() {
         val expected = ExpenseSummary(
             id,
             OffsetDateTime.parse("2020-04-02T18:24:55.931344-05:00"),
-            BigDecimal(1.23),
+            1.23,
             1,
             "VENDOR_TEST",
             "EXPENSE_CATEGORY_TEST",

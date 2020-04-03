@@ -7,7 +7,7 @@ import com.moneytree.domain.expense.ExpenseSummary as ExpenseSummaryDomain
 data class ExpenseSummary (
     val expense_id: Long? = null,
     val transaction_date: OffsetDateTime,
-    val transaction_amount: BigDecimal,
+    val transaction_amount: Double,
     val vendor_id: Long,
     val vendor_name: String,
     val expense_category: String,
