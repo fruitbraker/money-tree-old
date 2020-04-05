@@ -1,10 +1,9 @@
 package com.moneytree.mtapi.v1.expense
 
-import java.math.BigDecimal
-import java.time.OffsetDateTime
 import com.moneytree.domain.expense.ExpenseSummary as ExpenseSummaryDomain
+import java.time.OffsetDateTime
 
-data class ExpenseSummary (
+data class ExpenseSummary(
     val expense_id: Long? = null,
     val transaction_date: OffsetDateTime,
     val transaction_amount: Double,

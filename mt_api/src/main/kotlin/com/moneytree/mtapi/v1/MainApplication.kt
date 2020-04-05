@@ -3,27 +3,18 @@ package com.moneytree.mtapi.v1
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
-import com.google.inject.Provides
 import com.moneytree.domain.expense.ExpenseService
-import com.moneytree.domain.expense.IExpenseRepository
 import com.moneytree.domain.expense.IExpenseService
 import com.moneytree.mtapi.v1.expense.ExpenseRoutes
 import com.moneytree.persist.PersistModules
-import org.eclipse.jetty.util.Jetty
-import org.http4k.core.Body
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
-import org.http4k.core.with
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.server.asServer
-import org.http4k.format.Gson.auto
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.server.Http4kServer
-import java.sql.Connection
-import java.sql.DriverManager
-import javax.sql.DataSource
 
 fun main() {
     setUpServer().start()
@@ -46,13 +37,13 @@ fun setUpServer(): Http4kServer {
     return allRoutes.asServer(org.http4k.server.Jetty(9000))
 }
 
-class ServiceModules: AbstractModule() {
+class ServiceModules : AbstractModule() {
     override fun configure() {
         bind(IExpenseService::class.java).to(ExpenseService::class.java).asEagerSingleton()
     }
 }
 
-class RouteModules: AbstractModule() {
+class RouteModules : AbstractModule() {
     override fun configure() {
         bind(ExpenseRoutes::class.java).asEagerSingleton()
     }

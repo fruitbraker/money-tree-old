@@ -1,7 +1,5 @@
 package com.moneytree.domain
 
-import com.sun.org.apache.xpath.internal.operations.Bool
-
 @Suppress("FunctionName")
 inline fun <T> Try(operation: () -> T): Result<T, Throwable> {
     return try {

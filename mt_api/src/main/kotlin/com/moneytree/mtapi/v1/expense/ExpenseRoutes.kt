@@ -16,14 +16,14 @@ import javax.inject.Singleton
 
 @Singleton
 class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseService) {
-    fun expenseRoutes (): RoutingHttpHandler {
+    fun expenseRoutes(): RoutingHttpHandler {
         val expenseLens = Body.auto<Expense>().toLens()
         val expenseSummaryLens = Body.auto<ExpenseSummary>().toLens()
         val expenseSummaryListLens = Body.auto<MutableList<ExpenseSummary>>().toLens()
         val expenseIdLens = Path.string().of("expense_id")
 
         return routes(
-            "/expense/{expense_id}" bind GET to {request: Request ->
+            "/expense/{expense_id}" bind GET to { request: Request ->
                 try {
                     val expenseId = expenseIdLens(request).toLong()
                     when (val result = expenseService.search(expenseId)) {

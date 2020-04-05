@@ -1,10 +1,8 @@
 package com.moneytree.domain.expense
 
-import java.math.BigDecimal
-import java.sql.Timestamp
 import java.time.OffsetDateTime
 
-data class ExpenseSummary (
+data class ExpenseSummary(
     val expenseId: Long?,
     val transactionDate: OffsetDateTime,
     val transactionAmount: Double,
