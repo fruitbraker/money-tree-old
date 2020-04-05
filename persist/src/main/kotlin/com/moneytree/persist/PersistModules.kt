@@ -3,8 +3,10 @@ package com.moneytree.persist
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
 import com.moneytree.domain.expense.IExpenseRepository
+import com.moneytree.domain.expense_category.IExpenseCategoryRepository
 import com.moneytree.persist.db.generated.tables.daos.ExpenseDao
 import com.moneytree.persist.expense.ExpenseRepository
+import com.moneytree.persist.expense_category.ExpenseCategoryRepository
 import com.zaxxer.hikari.HikariDataSource
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
@@ -18,9 +20,10 @@ import javax.inject.Singleton
 class PersistModules: AbstractModule() {
     override fun configure() {
         bind(IExpenseRepository::class.java).to(ExpenseRepository::class.java).asEagerSingleton()
+        bind(IExpenseCategoryRepository::class.java).to(ExpenseCategoryRepository::class.java).asEagerSingleton()
     }
 
-    private val schema = "test"
+    private val schema = "mtdev"
 
     @Provides
     @Singleton

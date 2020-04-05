@@ -15,7 +15,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseService) {
+class ExpenseRoutes @Inject constructor(
+    private val expenseService: IExpenseService
+) {
     fun expenseRoutes(): RoutingHttpHandler {
         val expenseLens = Body.auto<Expense>().toLens()
         val expenseSummaryLens = Body.auto<ExpenseSummary>().toLens()

@@ -5,7 +5,10 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 import com.moneytree.domain.expense.ExpenseService
 import com.moneytree.domain.expense.IExpenseService
+import com.moneytree.domain.expense_category.ExpenseCategoryService
+import com.moneytree.domain.expense_category.IExpenseCategoryService
 import com.moneytree.mtapi.v1.expense.ExpenseRoutes
+import com.moneytree.mtapi.v1.expense_category.ExpenseCategoryRoutes
 import com.moneytree.persist.PersistModules
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
@@ -33,18 +36,24 @@ fun setUpServer(): Http4kServer {
         PersistModules()
     )
 
-    val allRoutes = routes(health(), injector.getInstance(ExpenseRoutes::class.java).expenseRoutes())
+    val allRoutes = routes(health(),
+        injector.getInstance(ExpenseRoutes::class.java).expenseRoutes(),
+        injector.getInstance(ExpenseCategoryRoutes::class.java).expenseCategoryRoutes()
+    )
+
     return allRoutes.asServer(org.http4k.server.Jetty(9000))
 }
 
 class ServiceModules : AbstractModule() {
     override fun configure() {
         bind(IExpenseService::class.java).to(ExpenseService::class.java).asEagerSingleton()
+        bind(IExpenseCategoryService::class.java).to(ExpenseCategoryService::class.java).asEagerSingleton()
     }
 }
 
 class RouteModules : AbstractModule() {
     override fun configure() {
         bind(ExpenseRoutes::class.java).asEagerSingleton()
+        bind(ExpenseCategoryRoutes::class.java).asEagerSingleton()
     }
 }
