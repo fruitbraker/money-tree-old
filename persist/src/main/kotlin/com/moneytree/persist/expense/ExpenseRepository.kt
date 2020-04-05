@@ -13,7 +13,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class ExpenseRepository @Inject constructor(
-    private val expenseDao: DSLContext
+    private val dslContext: DSLContext
 ): IExpenseRepository {
 
     private fun Record.toDomain(): ExpenseSummary {
@@ -33,7 +33,7 @@ class ExpenseRepository @Inject constructor(
     }
 
     override fun search(expenseId: Long): Result<ExpenseSummary, Exception> {
-         val result = expenseDao.configuration().dsl()
+         val result = dslContext.configuration().dsl()
             .select()
             .from(EXPENSE)
             .join(VENDOR).on(EXPENSE.VENDOR_ID.eq(VENDOR.VENDOR_ID))
@@ -51,7 +51,7 @@ class ExpenseRepository @Inject constructor(
 
     override fun insert(expense: Expense): Result<Long, Exception> {
         return try {
-            val result = expenseDao.configuration().dsl()
+            val result = dslContext.configuration().dsl()
                 .insertInto(EXPENSE)
                 .columns(EXPENSE.TRANSACTION_DATE,
                     EXPENSE.TRANSACTION_AMOUNT,

@@ -12,6 +12,6 @@ class ExpenseCategoryService @Inject constructor(
     private val expenseCategoryRepository: IExpenseCategoryRepository
 ) : IExpenseCategoryService {
     override fun get(): Result<List<ExpenseCategory>, Exception> {
-        TODO("Not yet implemented")
+        return expenseCategoryRepository.get()
     }
 }
