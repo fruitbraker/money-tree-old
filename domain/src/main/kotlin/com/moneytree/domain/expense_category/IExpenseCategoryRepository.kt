@@ -5,4 +5,5 @@ import java.lang.Exception
 
 interface IExpenseCategoryRepository {
     fun get(): Result<List<ExpenseCategory>, Exception>
+    fun insert(expenseCategory: String): Result<Unit, Exception>
 }

@@ -14,4 +14,8 @@ class ExpenseCategoryService @Inject constructor(
     override fun get(): Result<List<ExpenseCategory>, Exception> {
         return expenseCategoryRepository.get()
     }
+
+    override fun insert(expenseCategory: String): Result<Unit, Exception> {
+        return expenseCategoryRepository.insert(expenseCategory)
+    }
 }

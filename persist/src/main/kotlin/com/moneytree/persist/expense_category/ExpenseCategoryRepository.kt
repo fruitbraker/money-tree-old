@@ -5,7 +5,7 @@ import com.moneytree.domain.expense_category.ExpenseCategory
 import com.moneytree.domain.expense_category.IExpenseCategoryRepository
 import com.moneytree.domain.toErr
 import com.moneytree.domain.toOk
-import com.moneytree.persist.db.generated.Tables.EXPENSE_CATEGORY
+import com.moneytree.persist.db.generated.Tables.*
 import org.jooq.DSLContext
 import org.jooq.Record
 import java.lang.Exception
@@ -32,6 +32,18 @@ class ExpenseCategoryRepository @Inject constructor(
         } catch (e: Exception) {
             e.toErr()
         }
+    }
 
+    override fun insert(expenseCategory: String): Result<Unit, Exception> {
+        return try {
+            dslContext.configuration().dsl()
+                .insertInto(EXPENSE_CATEGORY)
+                .columns(EXPENSE_CATEGORY.EXPENSE_CATEGORY_ID)
+                .values(expenseCategory)
+                .execute()
+            Unit.toOk()
+        } catch (e: Exception) {
+            e.toErr()
+        }
     }
 }

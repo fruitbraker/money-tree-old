@@ -15,6 +15,8 @@ import javax.inject.Singleton
 class ExpenseCategoryRoutes @Inject constructor(
     private val expenseCategoryService: IExpenseCategoryService
 ) {
+
+    private val expenseCategoryLens = Body.auto<ExpenseCategory>().toLens()
     private val expenseCategoryListLens = Body.auto<List<ExpenseCategory>>().toLens()
 
     fun expenseCategoryRoutes(): RoutingHttpHandler {
@@ -33,6 +35,17 @@ class ExpenseCategoryRoutes @Inject constructor(
                     }
                 } catch (e: Exception) {
                     Response(Status.BAD_GATEWAY).body("Something terrible went wrong. Contact developer.")
+                }
+            },
+
+            "/expense_category" bind Method.POST to {
+                try {
+                    when (expenseCategoryService.insert(expenseCategoryLens(it).expense_category)) {
+                        is Result.Ok -> Response(Status.CREATED)
+                        is Result.Err -> Response(Status.BAD_REQUEST).body("Bad input data.")
+                    }
+                } catch (e: Exception) {
+                    Response(Status.BAD_REQUEST).body("Bad input data.")
                 }
             }
         )
