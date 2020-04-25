@@ -6,4 +6,5 @@ import java.lang.Exception
 interface IExpenseCategoryService {
     fun get(): Result<List<ExpenseCategory>, Exception>
     fun insert(expenseCategory: String): Result<Unit, Exception>
+    fun delete(expenseCategory: String): Result<Unit, Exception>
 }

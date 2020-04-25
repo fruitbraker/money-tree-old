@@ -18,4 +18,8 @@ class ExpenseCategoryService @Inject constructor(
     override fun insert(expenseCategory: String): Result<Unit, Exception> {
         return expenseCategoryRepository.insert(expenseCategory)
     }
+
+    override fun delete(expenseCategory: String): Result<Unit, Exception> {
+        return expenseCategoryRepository.delete(expenseCategory)
+    }
 }

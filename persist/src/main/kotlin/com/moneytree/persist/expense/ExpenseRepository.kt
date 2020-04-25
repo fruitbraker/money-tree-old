@@ -41,7 +41,6 @@ class ExpenseRepository @Inject constructor(
             .where(EXPENSE.EXPENSE_ID.eq(expenseId))
             .fetch()
 
-
         return try {
             result.mapNotNull { it.toDomain() }.first().toOk()
         } catch (e: Exception) {

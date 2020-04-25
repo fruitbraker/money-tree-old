@@ -10,6 +10,7 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import java.lang.Exception
 import javax.inject.Inject
+import kotlin.math.exp
 
 class ExpenseCategoryRepository @Inject constructor(
     private val dslContext: DSLContext
@@ -40,6 +41,18 @@ class ExpenseCategoryRepository @Inject constructor(
                 .insertInto(EXPENSE_CATEGORY)
                 .columns(EXPENSE_CATEGORY.EXPENSE_CATEGORY_ID)
                 .values(expenseCategory)
+                .execute()
+            Unit.toOk()
+        } catch (e: Exception) {
+            e.toErr()
+        }
+    }
+
+    override fun delete(expenseCategory: String): Result<Unit, Exception> {
+        return try {
+            dslContext.configuration().dsl()
+                .deleteFrom(EXPENSE_CATEGORY)
+                .where(EXPENSE_CATEGORY.EXPENSE_CATEGORY_ID.eq(expenseCategory))
                 .execute()
             Unit.toOk()
         } catch (e: Exception) {

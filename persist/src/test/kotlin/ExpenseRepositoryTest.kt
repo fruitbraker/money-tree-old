@@ -15,18 +15,6 @@ class ExpenseRepositoryTest: PersistTestModule() {
     private val expenseRepository = injector.getInstance(ExpenseRepository::class.java)
 
     @Test
-    fun `it returns NoSuchElementException with a nonexistent expense ID`() {
-        val id = 9999999L
-        val expected = NoSuchElementException("List is empty.")
-        Expense(id, OffsetDateTime.now(), BigDecimal(1), 1, "TEST", 1, false)
-        val result = when (val searchResult = expenseRepository.search(id)) {
-            is Result.Ok -> searchResult.value
-            is Result.Err -> searchResult.error.cause
-        }
-        assertEquals(result, expected.cause)
-    }
-
-    @Test
     fun `it successfully retrieves an Expense by id`() {
         val id = 1L
         val expected = ExpenseSummary(
@@ -48,4 +36,17 @@ class ExpenseRepositoryTest: PersistTestModule() {
         }
         assertEquals(result, expected)
     }
+
+    @Test
+    fun `it returns NoSuchElementException with a nonexistent expense ID`() {
+        val id = 9999999L
+        val expected = NoSuchElementException("List is empty.")
+        Expense(id, OffsetDateTime.now(), BigDecimal(1), 1, "TEST", 1, false)
+        val result = when (val searchResult = expenseRepository.search(id)) {
+            is Result.Ok -> searchResult.value
+            is Result.Err -> searchResult.error.cause
+        }
+        assertEquals(result, expected.cause)
+    }
+
 }

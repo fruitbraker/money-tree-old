@@ -7,9 +7,9 @@ import org.http4k.format.Gson.auto
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.routing.routes
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.Exception
 
 @Singleton
 class ExpenseCategoryRoutes @Inject constructor(
@@ -37,12 +37,22 @@ class ExpenseCategoryRoutes @Inject constructor(
                     Response(Status.BAD_GATEWAY).body("Something terrible went wrong. Contact developer.")
                 }
             },
-
             "/expense_category" bind Method.POST to {
                 try {
                     when (expenseCategoryService.insert(expenseCategoryLens(it).expense_category)) {
                         is Result.Ok -> Response(Status.CREATED)
                         is Result.Err -> Response(Status.BAD_REQUEST).body("Bad input data.")
+                    }
+                } catch (e: Exception) {
+                    Response(Status.BAD_REQUEST).body("Bad input data.")
+                }
+            },
+            "/expense_category" bind Method.DELETE to {
+                try {
+                    val toBeDeleted = expenseCategoryLens(it).expense_category
+                    when (expenseCategoryService.delete(toBeDeleted)) {
+                        is Result.Ok -> Response(Status.NO_CONTENT)
+                        is Result.Err -> Response(Status.NOT_FOUND)
                     }
                 } catch (e: Exception) {
                     Response(Status.BAD_REQUEST).body("Bad input data.")
