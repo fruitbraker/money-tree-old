@@ -17,13 +17,11 @@ import org.jooq.impl.DSL
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class PersistModules: AbstractModule() {
+class PersistModules(val schema: String): AbstractModule() {
     override fun configure() {
         bind(IExpenseRepository::class.java).to(ExpenseRepository::class.java).asEagerSingleton()
         bind(IExpenseCategoryRepository::class.java).to(ExpenseCategoryRepository::class.java).asEagerSingleton()
     }
-
-    private val schema = "mtdev"
 
     @Provides
     @Singleton

@@ -33,7 +33,7 @@ fun setUpServer(): Http4kServer {
     val injector: Injector = Guice.createInjector(
         ServiceModules(),
         RouteModules(),
-        PersistModules()
+        PersistModules("mtdev")
     )
 
     val allRoutes = routes(health(),

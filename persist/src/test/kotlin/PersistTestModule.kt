@@ -4,6 +4,6 @@ import com.moneytree.persist.PersistModules
 
 open class PersistTestModule {
     val injector: Injector = Guice.createInjector(
-        PersistModules()
+        PersistModules("test")
     )
 }
