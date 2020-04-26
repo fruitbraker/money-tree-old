@@ -102,3 +102,4 @@ inline fun <T, E> Result<T, E>.otherwise(then: (err: Result.Err<E>) -> T): T {
 fun <T> T.toResult() = this.toOk()
 fun <T> T.toOk() = Result.Ok(this)
 fun <E> E.toErr() = Result.Err(this)
+

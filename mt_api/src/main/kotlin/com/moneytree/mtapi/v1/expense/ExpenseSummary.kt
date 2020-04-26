@@ -17,22 +17,6 @@ data class ExpenseSummary(
     val hide: Boolean
 ) {
     companion object {
-        fun toDomain(expenseSummary: ExpenseSummary): ExpenseSummaryDomain {
-            return ExpenseSummaryDomain(
-                expenseId = expenseSummary.expense_id,
-                transactionDate = expenseSummary.transaction_date,
-                transactionAmount = expenseSummary.transaction_amount,
-                vendorId = expenseSummary.vendor_id,
-                vendorName = expenseSummary.vendor_name,
-                expenseCategory = expenseSummary.expense_category,
-                metadataId = expenseSummary.metadata_id,
-                dateCreated = expenseSummary.date_created,
-                dateModified = expenseSummary.date_modified,
-                notes = expenseSummary.notes,
-                hide = expenseSummary.hide
-            )
-        }
-
         fun fromDomain(expenseDomain: ExpenseSummaryDomain): ExpenseSummary {
             return ExpenseSummary(
                 expense_id = expenseDomain.expenseId,

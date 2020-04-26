@@ -15,7 +15,7 @@ data class Expense(
 ) {
     companion object {
         fun toDomain(expense: Expense): ExpenseDomain {
-            return com.moneytree.domain.expense.Expense(
+            return ExpenseDomain(
                 expenseId = expense.expense_id,
                 transactionDate = expense.transaction_date,
                 transactionAmount = expense.transaction_amount,
@@ -23,18 +23,6 @@ data class Expense(
                 expenseCategory = expense.expense_category,
                 metadataId = expense.metadata_id,
                 hide = expense.hide
-            )
-        }
-
-        fun fromDomain(expenseDomain: ExpenseDomain): Expense {
-            return Expense(
-                expense_id = expenseDomain.expenseId,
-                transaction_date = expenseDomain.transactionDate,
-                transaction_amount = expenseDomain.transactionAmount,
-                vendor_id = expenseDomain.vendorId,
-                expense_category = expenseDomain.expenseCategory,
-                metadata_id = expenseDomain.metadataId,
-                hide = expenseDomain.hide
             )
         }
     }

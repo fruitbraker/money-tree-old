@@ -8,7 +8,9 @@ import javax.transaction.Transactional
 
 @Singleton
 @Transactional
-class ExpenseService @Inject constructor(private val expenseRepository: IExpenseRepository) : IExpenseService {
+class ExpenseService @Inject constructor(
+    private val expenseRepository: IExpenseRepository
+) : IExpenseService {
 
     override fun search(expenseId: Long): Result<ExpenseSummary, Exception> {
         return expenseRepository.search(expenseId)

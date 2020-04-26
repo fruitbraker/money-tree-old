@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS metadata
 CREATE TABLE IF NOT EXISTS expense
 (
     expense_id BIGSERIAL PRIMARY KEY NOT NULL,
-    transaction_date TIMaESTAMPTZ NOT NULL,
+    transaction_date TIMESTAMPTZ NOT NULL,
     transaction_amount DECIMAL NOT NULL,
     vendor_id BIGINT REFERENCES vendor(vendor_id) NOT NULL,
     expense_category VARCHAR(32) REFERENCES expense_category(expense_category_id) NOT NULL,

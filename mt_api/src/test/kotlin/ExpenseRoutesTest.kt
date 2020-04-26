@@ -38,7 +38,7 @@ class ExpenseRoutesTest {
     }
 
     @Test
-    fun `NO CONTENT status returned when retrieving expense with nonexistent id`() {
+    fun `NOT FOUND status returned when retrieving expense with nonexistent id`() {
         val id = Long.MAX_VALUE
         assertThat(client(Request(GET, "${url}/expense/${id}")), hasStatus(Status.NOT_FOUND))
     }

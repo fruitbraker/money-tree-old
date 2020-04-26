@@ -15,7 +15,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseService) {
+class ExpenseRoutes @Inject constructor(
+    private val expenseService: IExpenseService
+) {
     fun expenseRoutes(): RoutingHttpHandler {
         val expenseLens = Body.auto<Expense>().toLens()
         val expenseSummaryLens = Body.auto<ExpenseSummary>().toLens()
@@ -23,9 +25,9 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
         val expenseIdLens = Path.string().of("expense_id")
 
         return routes(
-            "/expense/{expense_id}" bind GET to { request: Request ->
+            "/expense/{expense_id}" bind GET to {
                 try {
-                    val expenseId = expenseIdLens(request).toLong()
+                    val expenseId = expenseIdLens(it).toLong()
                     when (val result = expenseService.search(expenseId)) {
                         is Result.Ok -> {
                             Response(Status.OK).with(expenseSummaryLens of ExpenseSummary.fromDomain(result.value))
@@ -41,9 +43,9 @@ class ExpenseRoutes @Inject constructor(private val expenseService: IExpenseServ
                     Response(Status.BAD_REQUEST).body("Bad input data.")
                 }
             },
-            "/expense" bind POST to { request: Request ->
+            "/expense" bind POST to {
                 try {
-                    val newExpense = expenseLens(request)
+                    val newExpense = expenseLens(it)
                     when (val result = expenseService.insert(Expense.toDomain(newExpense))) {
                         is Result.Ok -> Response(Status.CREATED).with(expenseLens of newExpense.copy(expense_id = result.value))
                         is Result.Err -> Response(Status.BAD_REQUEST).body("Bad input data.")
