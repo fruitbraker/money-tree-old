@@ -4,13 +4,11 @@ import com.moneytree.domain.expense.ExpenseSummary
 import com.moneytree.persist.expense.ExpenseRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
-import java.lang.Exception
 import java.math.BigDecimal
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.NoSuchElementException
 
-class ExpenseRepositoryTest: PersistTestModule() {
+class ExpenseRepositoryTest : PersistTestModule() {
 
     private val expenseRepository = injector.getInstance(ExpenseRepository::class.java)
 
@@ -48,5 +46,4 @@ class ExpenseRepositoryTest: PersistTestModule() {
         }
         assertEquals(result, expected.cause)
     }
-
 }

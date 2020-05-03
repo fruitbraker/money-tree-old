@@ -2,12 +2,11 @@ import com.moneytree.domain.Result
 import com.moneytree.domain.otherwise
 import com.moneytree.persist.expense_category.ExpenseCategoryRepository
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.number.OrderingComparison.greaterThan
 import org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class ExpenseCategoryRepositoryTest: PersistTestModule() {
+class ExpenseCategoryRepositoryTest : PersistTestModule() {
 
     private val expenseCategoryRepository = injector.getInstance(ExpenseCategoryRepository::class.java)
 

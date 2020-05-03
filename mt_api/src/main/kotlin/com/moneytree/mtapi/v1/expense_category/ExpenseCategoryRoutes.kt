@@ -30,11 +30,11 @@ class ExpenseCategoryRoutes @Inject constructor(
                             )
                         }
                         is Result.Err -> {
-                            Response(Status.BAD_GATEWAY).body("Something terrible went wrong. Contact developer.")
+                            Response(Status.BAD_REQUEST).body("Bad input data.")
                         }
                     }
                 } catch (e: Exception) {
-                    Response(Status.BAD_GATEWAY).body("Something terrible went wrong. Contact developer.")
+                    Response(Status.BAD_REQUEST).body("Bad input data.")
                 }
             },
             "/expense_category" bind Method.POST to {
