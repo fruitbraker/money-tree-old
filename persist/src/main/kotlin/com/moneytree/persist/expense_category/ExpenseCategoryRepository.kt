@@ -10,11 +10,10 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import java.lang.Exception
 import javax.inject.Inject
-import kotlin.math.exp
 
 class ExpenseCategoryRepository @Inject constructor(
     private val dslContext: DSLContext
-): IExpenseCategoryRepository {
+) : IExpenseCategoryRepository {
 
     private fun Record.toDomain(): ExpenseCategory {
         return ExpenseCategory(

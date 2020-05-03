@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class ExpenseRepository @Inject constructor(
     private val dslContext: DSLContext
-): IExpenseRepository {
+) : IExpenseRepository {
 
     private fun Record.toDomain(): ExpenseSummary {
         return ExpenseSummary(
@@ -33,7 +33,7 @@ class ExpenseRepository @Inject constructor(
     }
 
     override fun search(expenseId: Long): Result<ExpenseSummary, Exception> {
-         val result = dslContext.configuration().dsl()
+        val result = dslContext.configuration().dsl()
             .select()
             .from(EXPENSE)
             .join(VENDOR).on(EXPENSE.VENDOR_ID.eq(VENDOR.VENDOR_ID))

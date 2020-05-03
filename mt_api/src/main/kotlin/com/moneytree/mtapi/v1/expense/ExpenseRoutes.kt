@@ -9,7 +9,7 @@ import org.http4k.routing.routes
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
 import org.http4k.lens.Path
-import org.http4k.lens.string
+import org.http4k.lens.long
 import org.http4k.routing.bind
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,12 +22,12 @@ class ExpenseRoutes @Inject constructor(
         val expenseLens = Body.auto<Expense>().toLens()
         val expenseSummaryLens = Body.auto<ExpenseSummary>().toLens()
         val expenseSummaryListLens = Body.auto<MutableList<ExpenseSummary>>().toLens()
-        val expenseIdLens = Path.string().of("expense_id")
+        val expenseIdLens = Path.long().of("expense_id")
 
         return routes(
             "/expense/{expense_id}" bind GET to {
                 try {
-                    val expenseId = expenseIdLens(it).toLong()
+                    val expenseId = expenseIdLens(it)
                     when (val result = expenseService.search(expenseId)) {
                         is Result.Ok -> {
                             Response(Status.OK).with(expenseSummaryLens of ExpenseSummary.fromDomain(result.value))
